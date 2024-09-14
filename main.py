@@ -28,3 +28,29 @@ I want to create the following functions:
  4. main(): This will consist of the Streamlit application, integrating all the components.
 '''
 
+
+def takeCommand():
+    """
+    This function takes a voice command & recognizes your saying based on your accent
+
+    Returns:
+        text as query
+    """
+    recog  = sr.Recognizer()
+    with sr.Microphone() as source:
+        print('Listening to your query....')
+        recog.pause_threshold=1
+        audio = recog.listen(source)
+
+    try: 
+        print('Recognizing...')
+        query = recog.recognize_google(audio, language='en-in')
+        print(f"User said: {query}\n")
+
+    except Exception as e: 
+        logging.info(e)
+        print('Please try again!')
+        return "None"
+    return query
+
+
