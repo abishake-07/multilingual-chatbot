@@ -100,7 +100,16 @@ I want to create the following functions:
             text = takeCommand()
             response= gemini_model(text)
             text_to_speech(response)
-            st.success(f"Response: {response}")
+
+            audio_file = open("output.mp3", 'rb')
+            audio_bytes = audio_file.read()
+            st.audio(audio_bytes, format='audio/mp3')
+            st.text_area(label="Response:",value=response,height=300)
+            st.download_button(data = audio_bytes,
+                               label="Download Speech File",
+                               file_name="output.mp3",
+                               mime="audio/mp3")
+
             
 
 
