@@ -4,6 +4,7 @@ import os
 from gtts import gTTS
 import google.generativeai as genai 
 import streamlit as st 
+from dotenv import load_dotenv
 
 
 # Making a logger file to understand the different instances ( functions ) executed 
@@ -20,13 +21,6 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-'''  
-I want to create the following functions:
- 1. takeCommand(): This function will take voice input from the microphone.
- 2. textToSpeech(): This function will convert the text result into an audio file.
- 3. AImodel(): This function will retrieve the Gemini credentials for use in AI tasks.
- 4. main(): This will consist of the Streamlit application, integrating all the components.
-'''
 
 
 def takeCommand():
@@ -54,3 +48,59 @@ def takeCommand():
     return query
 
 
+def text_to_speech(text): 
+    """
+    Saving the derived text from the model into a audio file
+    """
+    ttx = gTTS(text=text,lang='en')
+    ttx.save("output.mp3")
+
+
+def configure():
+    load_dotenv()
+
+
+def gemini_model(user_input):
+    """
+    Configuring the Gemini API credentials 
+    """
+    genai.configure(api_key=os.getenv('gemini_key'))
+    model = genai.GenerativeModel('gemini-pro')
+    response = model.generate_content(user_input)
+    results = response.text
+    return results
+
+
+
+
+
+
+
+
+def main():
+    '''  
+I want to create the following functions:
+ 1. takeCommand(): This function will take voice input from the microphone.
+ 2. textToSpeech(): This function will convert the text result into an audio file.
+ 3. AImodel(): This function will retrieve the Gemini credentials for use in AI tasks.
+ 4. main(): This will consist of the Streamlit application, integrating all the components.
+'''
+
+    configure()
+
+    st.title("Multilingual Chatbot 🤖")
+
+    if st.button("Ask Away!"):
+        with st.spinner("Listening...."):
+            text = takeCommand()
+            response= gemini_model(text)
+            text_to_speech(response)
+            st.success(f"Response: {response}")
+            
+
+
+
+    #query = takeCommand()
+   # print(query)
+
+main()
