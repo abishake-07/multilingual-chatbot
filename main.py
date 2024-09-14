@@ -34,7 +34,12 @@ def takeCommand():
     with sr.Microphone() as source:
         print('Listening to your query....')
         recog.pause_threshold=1
-        audio = recog.listen(source)
+        try: 
+            audio = recog.listen(source, timeout=5)
+        except sr.WaitTimeoutError:
+            print('I could not hear you! Please try again!')
+            return "None"
+    
 
     try: 
         print('Recognizing...')
