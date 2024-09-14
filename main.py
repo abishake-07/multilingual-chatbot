@@ -20,5 +20,11 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+'''  
+I want to create the following functions:
+ 1. takeCommand(): This function will take voice input from the microphone.
+ 2. textToSpeech(): This function will convert the text result into an audio file.
+ 3. AImodel(): This function will retrieve the Gemini credentials for use in AI tasks.
+ 4. main(): This will consist of the Streamlit application, integrating all the components.
+'''
 
-### 
